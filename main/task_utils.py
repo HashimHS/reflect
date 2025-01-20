@@ -138,7 +138,7 @@ def isValid(x, y, N, reachable_points, grid):
     
     # Check if cell is in reachable cells
     val = grid[x][y]
-    if val not in reachable_points.tolist():    
+    if val not in reachable_points:    
         return False
     
     return True
