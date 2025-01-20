@@ -73,7 +73,7 @@ def run_data_gen(data_path, task):
 
     for i in range(int(task['num_samples'])):
         controller = Controller(
-            agentMode="default",
+            agentMode="arm",
             massThreshold=None,
             scene=task['scene'],
             visibilityDistance=1.5,
