@@ -217,6 +217,8 @@ class SceneGraph(object):
         if not merge:
             if new_node.object_id != self.in_robot_gripper():
                 for node in self.total_nodes:
+                    if node is None:
+                        continue
                     if node.name != new_node.name:
                         self.add_edge(node, new_node)
                         self.add_edge(new_node, node)
@@ -248,7 +250,7 @@ class SceneGraph(object):
             if new_node.name not in BULKY_OBJECTS:
                 if is_inside(src_pts=box_B_pts, target_pts=box_A_pts, thresh=INSIDE_THRESH):
                     if "countertop" in node.name or "stove burner" in node.name: # address the "inside countertop" issue
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on top of")
+                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on")
                     else:
                         self.edges[(new_node.name, node.name)] = Edge(new_node, node, "inside")
                 elif len(np.where((box_B_pts[:, 0] < box_A[4, 0]) & (box_B_pts[:, 0] > box_A[0, 0]) & 
@@ -258,14 +260,14 @@ class SceneGraph(object):
                         if 'slice' in new_node.name and node.name == 'bowl':
                             self.edges[(new_node.name, node.name)] = Edge(new_node, node, "inside")
                         else:
-                            self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on top of")
+                            self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on")
                     elif len(np.where(box_A_pts[:, 1] > box_B[4, 1])[0]) > len(box_A_pts) * ON_TOP_OF_THRESH:
                         if node.name not in BULKY_OBJECTS:
                             # thor specific - fruits unrealistically stay upright in the bowl leading to "on top of bowl" relation instead of "inside bowl" relation 
                             if 'slice' in node.name and new_node.name == 'bowl':
                                 self.edges[(node.name, new_node.name)] = Edge(node, new_node, "inside")
                             else:
-                                self.edges[(node.name, new_node.name)] = Edge(node, new_node, "on top of")
+                                self.edges[(node.name, new_node.name)] = Edge(node, new_node, "on")
 
         # CLOSE TO
         if dist < CLOSE_DISTANCE and (new_node.name, node.name) not in self.edges and (not new_node.global_node):
@@ -277,9 +279,9 @@ class SceneGraph(object):
                         self.edges[(new_node.name, node.name)] = Edge(new_node, node, "below")
                 elif abs(norm_vector[0]) > NORM_THRESH_LEFT_RIGHT:
                     if norm_vector[0] > 0:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on the right of")
+                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_right_of")
                     else:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on the left of")
+                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_left_of")
                 elif abs(norm_vector[2]) > NORM_THRESH_FRONT_BACK and new_node.bbox2d is not None and node.bbox2d is not None and new_node.depth is not None and node.depth is not None:
                     iou, inters = get_iou(new_node.bbox2d, node.bbox2d)
                     occlude_ratio = inters / ((node.bbox2d[2]-node.bbox2d[0]) * (node.bbox2d[3]-node.bbox2d[1]))
@@ -329,7 +331,7 @@ class SceneGraph(object):
         for edge_key, edge in self.edges.items():
             name_1, name_2 = edge_key
             edge_key_reversed = (name_2, name_1)
-            if (edge_key not in visited and edge_key_reversed not in visited) or edge.edge_type in ['on top of', 'inside', 'occluding']:
+            if (edge_key not in visited and edge_key_reversed not in visited) or edge.edge_type in ['on', 'inside', 'occluding']:
                 res += str(edge)
                 res += "\n"
             visited.append(edge_key)
