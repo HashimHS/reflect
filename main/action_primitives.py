@@ -1069,7 +1069,7 @@ def place_obj_in_small_receptacle(task, place_location, replan=False):
             degrees=tilt
         )
     #print("Look: ", e)
-    save_data(task, e, replan=replan)
+    # save_data(task, e, replan=replan)
     task.controller.step(action="Done")
     time.sleep(1)
 
