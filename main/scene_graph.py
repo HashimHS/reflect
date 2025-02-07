@@ -270,25 +270,25 @@ class SceneGraph(object):
                                 self.edges[(node.name, new_node.name)] = Edge(node, new_node, "on")
 
         # CLOSE TO
-        if dist < CLOSE_DISTANCE and (new_node.name, node.name) not in self.edges and (not new_node.global_node):
-            if node.name not in BULKY_OBJECTS and new_node.name not in BULKY_OBJECTS:
-                if abs(norm_vector[1]) > NORM_THRESH_UP_DOWN:
-                    if norm_vector[1] > 0:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "above")
-                    else:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "below")
-                elif abs(norm_vector[0]) > NORM_THRESH_LEFT_RIGHT:
-                    if norm_vector[0] > 0:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_right_of")
-                    else:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_left_of")
-                elif abs(norm_vector[2]) > NORM_THRESH_FRONT_BACK and new_node.bbox2d is not None and node.bbox2d is not None and new_node.depth is not None and node.depth is not None:
-                    iou, inters = get_iou(new_node.bbox2d, node.bbox2d)
-                    occlude_ratio = inters / ((node.bbox2d[2]-node.bbox2d[0]) * (node.bbox2d[3]-node.bbox2d[1]))
-                    # print("new_node, node: ", new_node.name, node.name)
-                    # print("iou, occlude_ratio: ", iou, occlude_ratio)
-                    if occlude_ratio > OCCLUDE_RATIO_THRESH and len(np.where(new_node.depth <= np.min(node.depth))[0]) > len(new_node.depth) * DEPTH_THRESH:
-                        self.edges[(new_node.name, node.name)] = Edge(new_node, node, "blocking")
+        # if dist < CLOSE_DISTANCE and (new_node.name, node.name) not in self.edges and (not new_node.global_node):
+        #     if node.name not in BULKY_OBJECTS and new_node.name not in BULKY_OBJECTS:
+        #         if abs(norm_vector[1]) > NORM_THRESH_UP_DOWN:
+        #             if norm_vector[1] > 0:
+        #                 self.edges[(new_node.name, node.name)] = Edge(new_node, node, "above")
+        #             else:
+        #                 self.edges[(new_node.name, node.name)] = Edge(new_node, node, "below")
+        #         elif abs(norm_vector[0]) > NORM_THRESH_LEFT_RIGHT:
+        #             if norm_vector[0] > 0:
+        #                 self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_right_of")
+        #             else:
+        #                 self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on_left_of")
+        #         elif abs(norm_vector[2]) > NORM_THRESH_FRONT_BACK and new_node.bbox2d is not None and node.bbox2d is not None and new_node.depth is not None and node.depth is not None:
+        #             iou, inters = get_iou(new_node.bbox2d, node.bbox2d)
+        #             occlude_ratio = inters / ((node.bbox2d[2]-node.bbox2d[0]) * (node.bbox2d[3]-node.bbox2d[1]))
+        #             # print("new_node, node: ", new_node.name, node.name)
+        #             # print("iou, occlude_ratio: ", iou, occlude_ratio)
+        #             if occlude_ratio > OCCLUDE_RATIO_THRESH and len(np.where(new_node.depth <= np.min(node.depth))[0]) > len(new_node.depth) * DEPTH_THRESH:
+        #                 self.edges[(new_node.name, node.name)] = Edge(new_node, node, "blocking")
     
     def add_object_state(self, node, event, mode="gt"):
         if mode == "gt":
