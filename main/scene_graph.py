@@ -248,7 +248,9 @@ class SceneGraph(object):
         # IN CONTACT
         if dist < IN_CONTACT_DISTANCE:
             if new_node.name not in BULKY_OBJECTS:
-                if is_inside(src_pts=box_B_pts, target_pts=box_A_pts, thresh=INSIDE_THRESH):
+                if "Mug" in new_node.name and "CoffeeMachine" in node.name:
+                    self.edges[(new_node.name, node.name)] = Edge(new_node, node, "inside")
+                elif is_inside(src_pts=box_B_pts, target_pts=box_A_pts, thresh=INSIDE_THRESH):
                     if "countertop" in node.name or "stove burner" in node.name: # address the "inside countertop" issue
                         self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on")
                     else:
