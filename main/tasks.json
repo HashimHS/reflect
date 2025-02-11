@@ -35,7 +35,17 @@
             "(pick_up, Mug)",
             "(put_on, Mug, CounterTop)"
         ],
-        "success_condition": "a clean mug is filled with coffee and on top of the countertop."
+        "success_condition": "a clean mug is filled with coffee and on top of the countertop.",
+        "goal_conditions": {
+            "goal_condition_1": {
+                "name": "Filled",
+                "params": {"interact_object": "Mug", "liquid": "coffee"}
+            },
+            "goal_condition_2": {
+                "name": "At_Pos",
+                "params": {"target_object": "Mug", "relation": "on", "relative_object": "CounterTop"}
+            }
+        }
     },
     "Task 2": {
         "name": "boil water",
