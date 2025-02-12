@@ -212,7 +212,7 @@ class SceneGraph(object):
                 if merge:
                     node.pcd = torch.cat((node.pcd, new_node.pcd), 0)
                     self.nodes[idx] = node
-                    self.add_object_state(new_node, self.event, mode="gt")
+                    # self.add_object_state(new_node, self.event, mode="gt")
                     return new_node
         if not merge:
             if new_node.object_id != self.in_robot_gripper():
@@ -223,7 +223,7 @@ class SceneGraph(object):
                         self.add_edge(node, new_node)
                         self.add_edge(new_node, node)
             self.nodes.append(new_node)
-            self.add_object_state(new_node, self.event, mode="gt")
+            # self.add_object_state(new_node, self.event, mode="gt")
         return new_node
 
     def add_edge(self, node, new_node):
@@ -263,6 +263,8 @@ class SceneGraph(object):
                             self.edges[(new_node.name, node.name)] = Edge(new_node, node, "inside")
                         else:
                             self.edges[(new_node.name, node.name)] = Edge(new_node, node, "on")
+                            if "SinkBasin" in node.name:
+                                self.edges[(new_node.name, "Sink")] = Edge(new_node, "Sink", "inside")
                     elif len(np.where(box_A_pts[:, 1] > box_B[4, 1])[0]) > len(box_A_pts) * ON_TOP_OF_THRESH:
                         if node.name not in BULKY_OBJECTS:
                             # thor specific - fruits unrealistically stay upright in the bowl leading to "on top of bowl" relation instead of "inside bowl" relation 
@@ -270,6 +272,8 @@ class SceneGraph(object):
                                 self.edges[(node.name, new_node.name)] = Edge(node, new_node, "inside")
                             else:
                                 self.edges[(node.name, new_node.name)] = Edge(node, new_node, "on")
+                                if "SinkBasin" in node.name:
+                                    self.edges[(new_node.name, "Sink")] = Edge(new_node, "Sink", "inside")
 
         # CLOSE TO
         # if dist < CLOSE_DISTANCE and (new_node.name, node.name) not in self.edges and (not new_node.global_node):
