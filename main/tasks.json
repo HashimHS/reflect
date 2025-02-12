@@ -67,7 +67,17 @@
             "(put_on, Pot, StoveBurner-4)",
             "(toggle_on, StoveBurner-4)"
         ],
-        "success_condition": "a pot is filled with water, the pot is on top of a stove burner that is turned on."
+        "success_condition": "a pot is filled with water, the pot is on top of a stove burner that is turned on.",
+        "goal_conditions": {
+            "goal_condition_1": {
+                "name": "Filled",
+                "params": {"interact_object": "Pot", "liquid": "water"}
+            },
+            "goal_condition_2": {
+                "name": "At_Pos",
+                "params": {"target_object": "Pot", "relation": "on", "relative_object": "StoveBurner-2"}
+            }
+        }
     },
     "Task 3": {
         "name": "heat potato",
@@ -91,7 +101,29 @@
             "(put_in, Plate, Microwave)",
             "(close_obj, Microwave)"
         ],
-        "success_condition": "a potato is on a plate and inside a microwave that is turned on."
+        "success_condition": "a potato is on a plate and inside a microwave that is turned on.",
+        "goal_conditions": {
+            "goal_condition_1": {
+                "name": "At_Pos",
+                "params": {"target_object": "Potato", "relation": "on", "relative_object": "Plate"}
+            },
+            "goal_condition_2": {
+                "name": "At_Pos",
+                "params": {"target_object": "Plate", "relation": "on", "relative_object": "CounterTop"}
+            },
+            "goal_condition_3": {
+                "name": "Opened",
+                "params": {"interact_object": "Microwave"}
+            },
+            "goal_condition_4": {
+                "name": "At_Pos",
+                "params": {"target_object": "Plate", "relation": "inside", "relative_object": "Microwave"}
+            },
+            "goal_condition_5": {
+                "name": "Opened",
+                "params": {"interact_object": "Microwave", "not": "True"}
+            }
+        }
     },
     "Task 4": {
         "name": "heat potato",
@@ -120,7 +152,33 @@
             "(close_obj, Microwave)",
             "(toggle_on, Microwave)"
         ],
-        "success_condition": "a potato is on a plate and inside a microwave that is turned on."
+        "success_condition": "a potato is on a plate and inside a microwave that is turned on.",
+        "goal_conditions": {
+            "goal_condition_1": {
+                "name": "At_Pos",
+                "params": {"target_object": "Potato", "relation": "on", "relative_object": "Plate"}
+            },
+            "goal_condition_2": {
+                "name": "At_Pos",
+                "params": {"target_object": "Plate", "relation": "on", "relative_object": "CounterTop"}
+            },
+            "goal_condition_3": {
+                "name": "Opened",
+                "params": {"interact_object": "Microwave"}
+            },
+            "goal_condition_4": {
+                "name": "At_Pos",
+                "params": {"target_object": "Plate", "relation": "inside", "relative_object": "Microwave"}
+            },
+            "goal_condition_5": {
+                "name": "Opened",
+                "params": {"interact_object": "Microwave", "not": "True"}
+            },
+            "goal_condition_6": {
+                "name": "Toggled",
+                "params": {"interact_object": "Microwave"}
+            }
+        }
     },
     "Task 5": {
         "name": "boil water",
