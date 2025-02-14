@@ -17,7 +17,7 @@
             "target_obj_type": "CoffeeMachine",
             "disp_x": 0.0,
             "disp_z": 0.05,
-            "disp_y": 0.02
+            "disp_y": 0.12
         },
         "actions": [
             "(navigate_to_obj, Mug)",
