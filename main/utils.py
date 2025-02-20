@@ -1,15 +1,15 @@
 import numpy as np
 import open3d as o3d
 import torch
-from sentence_transformers import SentenceTransformer
-from sentence_transformers import util as st_utils
+# from sentence_transformers import SentenceTransformer
+# from sentence_transformers import util as st_utils
 import constants as cons
 import scipy.spatial
 
 translation_lm_id =  'stsb-roberta-large' # 'all-distilroberta-v1'
 # device = torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu")
 device = torch.device("cpu")
-translation_lm = SentenceTransformer(translation_lm_id).to(device)
+# translation_lm = SentenceTransformer(translation_lm_id).to(device)
 
 
 def get_pcd_dist(pts_A, pts_B):
@@ -260,7 +260,7 @@ def is_inside(src_pts, target_pts, thresh=0.5):
     # Don't want threshold to be too large (specially with more objects, like 4, 0.9*thresh becomes too large)
     thresh_obj_particles = thresh * num_src_pts
     src_points_in_hull = in_hull(src_pts, hull_vertices)
-    # print("src pts in target, thresh: ", src_points_in_hull.sum(), thresh_obj_particles)
+    print("src pts in target, thresh: ", src_points_in_hull.sum(), thresh_obj_particles)
     if src_points_in_hull.sum() > thresh_obj_particles:
         return True
     else:
